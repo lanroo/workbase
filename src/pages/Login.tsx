@@ -26,13 +26,13 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen min-h-[100dvh] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden bg-zinc-100">
+    <div className="min-h-screen min-h-[100dvh] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden bg-[#1a1a1f]">
       <div
-        className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_50%_50%_at_0%_100%,rgba(124,58,237,0.12),transparent),radial-gradient(ellipse_40%_40%_at_100%_100%,rgba(34,197,94,0.1),transparent)]"
+        className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_50%_50%_at_0%_100%,rgba(124,58,237,0.15),transparent),radial-gradient(ellipse_40%_40%_at_100%_100%,rgba(139,92,246,0.12),transparent)]"
         aria-hidden
       />
 
-      <div className="w-full max-w-[720px] bg-white rounded-2xl sm:rounded-[20px] p-6 sm:p-10 shadow-sm relative">
+      <div className="w-full max-w-[720px] bg-[#1e1e24]/90 border border-zinc-700/50 rounded-2xl sm:rounded-[20px] p-6 sm:p-10 shadow-xl relative backdrop-blur-sm">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
           <div className="flex justify-center items-center max-md:max-h-36 md:min-h-0 order-2 md:order-1" aria-hidden>
             <svg
@@ -59,8 +59,8 @@ export default function Login() {
           </div>
 
           <div className="min-w-0 order-1 md:order-2">
-            <h1 className="text-[22px] font-semibold text-zinc-900 mb-6">
-              <span className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-0.5 after:bg-gradient-to-r after:from-violet-600 after:to-indigo-600 after:rounded">
+            <h1 className="text-[22px] font-semibold text-white mb-6">
+              <span className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-0.5 after:bg-gradient-to-r after:from-violet-500 after:to-violet-400 after:rounded">
                 Sign in
               </span>
               {' '}to your account
@@ -69,7 +69,7 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               {error && (
                 <div
-                  className="flex items-center gap-2.5 py-2.5 px-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm"
+                  className="flex items-center gap-2.5 py-2.5 px-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm"
                   role="alert"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="shrink-0">
@@ -94,10 +94,10 @@ export default function Login() {
                     autoFocus
                     placeholder="email@example.com"
                     disabled={loading}
-                    className="w-full py-3 pl-3.5 pr-11 text-[15px] text-zinc-900 bg-white border border-zinc-200 rounded-[10px] placeholder:text-zinc-400 focus:outline-none focus:border-violet-600 focus:ring-[3px] focus:ring-violet-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full py-3 pl-3.5 pr-11 text-[15px] text-white bg-zinc-800/50 border border-zinc-600/50 rounded-[10px] placeholder:text-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-[3px] focus:ring-violet-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#71717a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                       <circle cx="12" cy="7" r="4" />
                     </svg>
@@ -115,10 +115,10 @@ export default function Login() {
                     autoComplete="current-password"
                     placeholder="Your password here"
                     disabled={loading}
-                    className="w-full py-3 pl-3.5 pr-11 text-[15px] text-zinc-900 bg-white border border-zinc-200 rounded-[10px] placeholder:text-zinc-400 focus:outline-none focus:border-violet-600 focus:ring-[3px] focus:ring-violet-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full py-3 pl-3.5 pr-11 text-[15px] text-white bg-zinc-800/50 border border-zinc-600/50 rounded-[10px] placeholder:text-zinc-500 focus:outline-none focus:border-violet-500 focus:ring-[3px] focus:ring-violet-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#71717a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                     </svg>
@@ -128,7 +128,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 px-4 mt-1 text-[15px] font-semibold tracking-wide text-white bg-violet-600 rounded-[10px] flex items-center justify-center gap-2.5 hover:bg-violet-700 disabled:opacity-85 disabled:cursor-not-allowed transition-colors"
+                className={"w-full py-3.5 px-4 mt-1 text-[15px] font-semibold tracking-wide text-white bg-violet-600 rounded-[10px] flex items-center justify-center gap-2.5 hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#1a1a1f] disabled:opacity-85 disabled:cursor-not-allowed transition-all cursor-pointer".concat(loading ? ' cursor-wait' : '')}
               >
                 {loading ? (
                   <>
@@ -140,21 +140,21 @@ export default function Login() {
                 )}
               </button>
               <div className="flex flex-col gap-2 mt-1 items-center text-center">
-                <a href="#" className="text-sm text-zinc-500 hover:text-zinc-700 hover:underline">
+                <a href="#" className="text-sm text-zinc-400 hover:text-zinc-200 hover:underline transition-colors">
                   Forgot your password?
                 </a>
-                <a href="#" className="text-sm text-blue-500 hover:text-blue-600 hover:underline">
+                <a href="#" className="text-sm text-violet-400 hover:text-violet-300 hover:underline transition-colors">
                   Need help signing in
                 </a>
               </div>
             </form>
 
-            <footer className="mt-7 pt-5 border-t border-zinc-100 text-xs text-zinc-500 text-center">
-              <a href="#" className="hover:text-zinc-700 hover:underline">
+            <footer className="mt-7 pt-5 border-t border-zinc-700/30 text-xs text-zinc-500 text-center">
+              <a href="#" className="hover:text-zinc-300 hover:underline transition-colors">
                 Terms of use
               </a>
-              <span className="mx-1.5 text-zinc-300">·</span>
-              <a href="#" className="hover:text-zinc-700 hover:underline">
+              <span className="mx-1.5 text-zinc-700">·</span>
+              <a href="#" className="hover:text-zinc-300 hover:underline transition-colors">
                 Privacy policy
               </a>
             </footer>

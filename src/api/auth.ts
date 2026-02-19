@@ -4,7 +4,12 @@ export type AuthUser = {
   id: string
   name: string
   email: string
-  role: 'admin' | 'user'
+  role: UserRole
+}
+
+export enum UserRole {
+  Admin = 'admin',
+  User = 'user',
 }
 
 export type LoginResponse = {
@@ -42,7 +47,7 @@ export async function logout(): Promise<void> {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refresh_token: refresh }),
       })
-    } catch (_) {}
+    } catch (_) { }
   }
   clearTokens()
 }

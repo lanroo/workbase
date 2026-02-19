@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import type { AuthUser } from '@/api/auth'
+import { AuthUser, UserRole } from '@/api/auth'
 import * as authApi from '@/api/auth'
 import { getAccessToken, getStoredUser } from '@/api/config'
 
@@ -21,7 +21,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => {
     const u = getStoredUser()
     if (!u) return null
-    return { ...u, role: u.role as 'admin' | 'user' }
+    const role: UserRole = u.role === 'admin' ? UserRole.Admin : UserRole.User
+    return { ...u, role: role }
   })
   const [loading, setLoading] = useState(true)
 
@@ -49,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       loading,
       isAuthenticated: !!user,
-      isAdmin: user?.role === 'admin',
+      isAdmin: user?.role === UserRole.Admin,
       login,
       logout,
     }),

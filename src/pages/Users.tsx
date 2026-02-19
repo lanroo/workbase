@@ -3,9 +3,9 @@ import { useQuery } from '@apollo/client'
 import { useAuth } from '@/context/AuthContext'
 import { Table } from '@/components/Table'
 import { Pagination } from '@/components/Pagination'
-import { Button, Input, Modal, ModalActions, PageHeader, ConfirmModal, EmptyState, Card, Tooltip, EditIcon, TrashIcon, PlusIcon, RoleIcon, RolePicker } from '@/components/ui'
+import { Button, Input, Modal, ModalActions, PageHeader, ConfirmModal, EmptyState, Card, Tooltip, TrashIcon, PlusIcon, RoleIcon, RolePicker } from '@/components/ui'
 import { LIST_USERS } from '@/graphql/users'
-import { createUser, updateUser, deleteUser } from '@/api/users'
+import { createUser, deleteUser } from '@/api/users'
 
 const PAGE_SIZE = 10
 
@@ -13,7 +13,6 @@ export default function Users() {
   const { isAdmin } = useAuth()
   const [page, setPage] = useState(1)
   const [modalOpen, setModalOpen] = useState<'create' | 'edit' | null>(null)
-  const [editingId, setEditingId] = useState<string | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'user' as 'admin' | 'user' })
   const [deletingUser, setDeletingUser] = useState<{ id: string; name: string; email: string; role?: string } | null>(null)
@@ -27,16 +26,8 @@ export default function Users() {
 
   const openCreate = () => {
     setForm({ name: '', email: '', password: '', role: 'user' })
-    setEditingId(null)
     setFormError(null)
     setModalOpen('create')
-  }
-
-  const openEdit = (user: { id: string; name: string; email: string; role?: string }) => {
-    setEditingId(user.id)
-    setForm({ name: user.name, email: user.email, password: '', role: (user.role as 'admin' | 'user') ?? 'user' })
-    setFormError(null)
-    setModalOpen('edit')
   }
 
   const handleCreate = (e: React.FormEvent) => {
@@ -53,25 +44,6 @@ export default function Users() {
         refetch()
       })
       .catch((err) => setFormError(err instanceof Error ? err.message : 'Failed to create user'))
-  }
-
-  const handleUpdate = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!editingId) return
-    setFormError(null)
-    const payload: { name: string; email: string; role: 'admin' | 'user'; password?: string } = {
-      name: form.name.trim(),
-      email: form.email.trim(),
-      role: form.role,
-    }
-    if (form.password) payload.password = form.password
-    updateUser(editingId, payload)
-      .then(() => {
-        setModalOpen(null)
-        setEditingId(null)
-        refetch()
-      })
-      .catch((err) => setFormError(err instanceof Error ? err.message : 'Failed to update user'))
   }
 
   const confirmDelete = () => {
@@ -146,39 +118,29 @@ export default function Users() {
               },
               ...(isAdmin
                 ? [
-                    {
-                      key: 'actions',
-                      label: 'Actions',
-                      align: 'right' as const,
-                      render: (_: unknown, row: Record<string, unknown>) => {
-                        const u = row._raw as { id: string; name: string; email: string; role?: string }
-                        return (
-                          <div className="flex gap-2 sm:gap-1">
-                            <Tooltip label="Edit">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => openEdit(u)}
-                                className="p-2 min-w-[44px] md:min-w-0 focus:ring-0 focus:ring-offset-0 border-0"
-                              >
-                                <EditIcon />
-                              </Button>
-                            </Tooltip>
-                            <Tooltip label="Delete">
-                              <Button
-                                variant="danger"
-                                size="sm"
-                                onClick={() => setDeletingUser(u)}
-                                className="p-2 min-w-[44px] md:min-w-0 focus:ring-0 focus:ring-offset-0 border-0"
-                              >
-                                <TrashIcon />
-                              </Button>
-                            </Tooltip>
-                          </div>
-                        )
-                      },
+                  {
+                    key: 'actions',
+                    label: 'Actions',
+                    align: 'right' as const,
+                    render: (_: unknown, row: Record<string, unknown>) => {
+                      const u = row._raw as { id: string; name: string; email: string; role?: string }
+                      return (
+                        <div className="flex gap-2 sm:gap-1">
+                          <Tooltip label="Delete">
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              onClick={() => setDeletingUser(u)}
+                              className="p-2 min-w-[44px] md:min-w-0 focus:ring-0 focus:ring-offset-0 border-0"
+                            >
+                              <TrashIcon />
+                            </Button>
+                          </Tooltip>
+                        </div>
+                      )
                     },
-                  ]
+                  },
+                ]
                 : []),
             ]}
             data={tableData}
@@ -247,42 +209,6 @@ export default function Users() {
               <RolePicker value={form.role} onChange={(role) => setForm((f) => ({ ...f, role }))} />
             </div>
             <ModalActions onClose={() => { setModalOpen(null); setFormError(null) }} submitLabel="Create" />
-          </form>
-        </Modal>
-      )}
-
-      {modalOpen === 'edit' && (
-        <Modal title="Edit user" onClose={() => { setModalOpen(null); setEditingId(null); setFormError(null) }}>
-          <form onSubmit={handleUpdate}>
-            {formError && (
-              <p className="text-red-400 text-sm mb-4" role="alert">
-                {formError}
-              </p>
-            )}
-            <Input
-              label="Name"
-              value={form.name}
-              onChange={(v) => setForm((f) => ({ ...f, name: v }))}
-              required
-            />
-            <Input
-              label="Email"
-              type="email"
-              value={form.email}
-              onChange={(v) => setForm((f) => ({ ...f, email: v }))}
-              required
-            />
-            <Input
-              label="New password (leave blank to keep current)"
-              type="password"
-              value={form.password}
-              onChange={(v) => setForm((f) => ({ ...f, password: v }))}
-              placeholder="Optional"
-            />
-            <div className="mb-5 last:mb-0">
-              <RolePicker value={form.role} onChange={(role) => setForm((f) => ({ ...f, role }))} />
-            </div>
-            <ModalActions onClose={() => { setModalOpen(null); setEditingId(null); setFormError(null) }} submitLabel="Save" />
           </form>
         </Modal>
       )}
